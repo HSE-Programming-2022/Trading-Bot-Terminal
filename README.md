@@ -36,6 +36,6 @@
 <br/> Если [sST < cP < pST](https://drive.google.com/file/d/181-e9bC__bsX-WHuLqQsk_1_-mjlfU0n/view?usp=sharing), то это сигнал для входа в лонг - ставка на повышение цены.
 
 <br/> Для опредение точки выхода из рынка условия должны быть такими:
-<br/> Если p4ST = p3ST = p2ST = p1ST = p0ST то рынок вошёл в точку разворота тренда и ест вероятность потерять деньги. 
+<br/> Если [p4ST = p3ST = p2ST = p1ST = p0ST](https://drive.google.com/file/d/1ASCBzkNFEzv-SWlUrZyHR0-yAF_KqIL1/view?usp=sharing) то рынок вошёл в точку разворота тренда и ест вероятность потерять деньги. 
 
 
