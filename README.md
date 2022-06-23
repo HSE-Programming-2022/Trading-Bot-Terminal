@@ -160,5 +160,47 @@ public static int[] GetCoinCourse(int n, string m)
             return thirdfilter;
         }
 ```
+### 3) Проверка валютной пары на флэт - SuperTrendFlatCheck(string m) ###
+
+Метод SuperTrendFlatCheck(string m) проверяет по критерию 5 последных значений SuperTrend полученных из метода SuperTrendAPICall(5, m).
+<br/> Если условия выполняются, то высылается уведомление о том, что рынок зашёл в флэт.
+
+```C#
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Net;
+using System.Web;
+
+ public static bool SuperTrendFlatCheck(string m)
+        {
+            int[] supertrandvalues = SuperTrendAPICall(5, m);
+
+            int count = 0;
+
+            for (int i = 1; i < supertrandvalues.Length; i++)
+            {
+                if (99 * supertrandvalues[i] < 100 * supertrandvalues[0] && 101 * supertrandvalues[i] > 100 * supertrandvalues[0])
+                {
+                    count++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (count == supertrandvalues.Length)
+            {
+                Console.WriteLine("Close possition found");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("No Close possition found");
+                return false;
+            }
+        }
+```
 
 
