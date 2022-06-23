@@ -38,4 +38,64 @@
 <br/> Для опредение точки выхода из рынка условия должны быть такими:
 <br/> Если [p4ST = p3ST = p2ST = p1ST = p0ST](https://drive.google.com/file/d/1ASCBzkNFEzv-SWlUrZyHR0-yAF_KqIL1/view?usp=sharing) то рынок вошёл в точку разворота тренда и ест вероятность потерять деньги. 
 
+## Основные методы бота ##
+
+Метод SuperTrendAPICall(int n, string m) получает данные через API о n последних значениях SuperTrends по m валютной паре, и возвращает массив с числовыми значения SuperTrend, которые понадабятся в следующих методах.
+
+```
+public static int[] SuperTrendAPICall(int n, string m)
+        {
+            var URL = new UriBuilder("https://api.taapi.io/supertrend");
+
+            var queryString = HttpUtility.ParseQueryString(string.Empty);
+            queryString["secret"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjJiMTlhY2Y2YzI4YjU1Y2Q1ODQ4OWM4IiwiaWF0IjoxNjU1OTY3ODI0LCJleHAiOjMzMTYwNDMxODI0fQ.y-SLYp6uSnX25ws7cLNWG-idLjvbj0qW8M-qvMGs5Go";
+            queryString["exchange"] = "binance";
+            queryString["symbol"] = m;
+            queryString["interval"] = "1h";
+            queryString["backtracks"] = Convert.ToString(n);
+
+            URL.Query = queryString.ToString();
+
+            var client = new WebClient();
+
+            string[] firstfilter = client.DownloadString(URL.ToString()).Split(new char[] { ',' } );
+
+            int infotypecount = 3 * n;
+
+            string[] secondfilter = new string[n];
+
+            int count = 0;
+            for (int i = 0; i < infotypecount; i+=3)
+            {
+                string[] filter = new string[n];
+                
+                if (i == 0)
+                {
+                    filter[count] += firstfilter[i].Substring(10);
+                    secondfilter[count] += filter[count].Substring(0, 5);
+                    count++;
+                }
+                else if (i != 0)
+                {
+                    filter[count] += firstfilter[i].Substring(9);
+                    secondfilter[count] += filter[count].Substring(0, 5);
+                    count++;
+                }
+            }
+
+            int[] thirdfilter = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                thirdfilter[i] = Convert.ToInt32(secondfilter[i]);
+            }
+            /*
+            foreach (var item in thirdfilter)
+            {
+                Console.WriteLine(item);       
+            }
+            */
+            return thirdfilter;
+        }
+```
+
 
