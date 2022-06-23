@@ -42,7 +42,13 @@
 
 Метод SuperTrendAPICall(int n, string m) получает данные через API о n последних значениях SuperTrends по m валютной паре, и возвращает массив с числовыми значения SuperTrend, которые понадабятся в следующих методах.
 
-```
+```C#
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Net;
+using System.Web;
+
 public static int[] SuperTrendAPICall(int n, string m)
         {
             var URL = new UriBuilder("https://api.taapi.io/supertrend");
