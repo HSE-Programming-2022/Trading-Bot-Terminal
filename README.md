@@ -42,7 +42,7 @@
 
 ### 1) Получение данных индикатора -SuperTrendAPICall(int n, string m) ###
 
-
+Метод SuperTrendAPICall(int n, string m) получает данные через API о n последних значениях SuperTrends по m валютной паре, и возвращает массив с числовыми значения SuperTrend, которые понадабятся в следующих методах.
 
 ```C#
 using System;
