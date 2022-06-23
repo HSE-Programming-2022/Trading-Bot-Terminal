@@ -202,5 +202,40 @@ using System.Web;
             }
         }
 ```
+### 4) Проверка валютной пары на наличие точки входа в рынок - EntryPossitionCheck(string m) ###
 
+Метод EntryPossitionCheck(string m) проверяет по критерию 2 последних значения SuperTrend, полученных из метода SuperTrendAPICall(2, m), и 2 последних значения CoinCourse, полученных из метода GetCoinCourse(2, m).
+<br/> Если условия выполняются, то высылается уведомление о том, что появилась позиция для входа в лонг и в шорт.
+
+```C#
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Net;
+using System.Web;
+
+ public static string EntryPossitionCheck(string m)
+        {
+            int[] supertrandvalues = SuperTrendAPICall(2, m);
+
+            int[] coincoursevalues = GetCoinCourse(2, m);
+
+            if (supertrandvalues[1] < coincoursevalues[1] && supertrandvalues[0] > coincoursevalues[0])
+            {
+                Console.WriteLine("Short entry possition found");
+                return "Short";
+            }
+            else if (supertrandvalues[1] > coincoursevalues[1] && supertrandvalues[0] < coincoursevalues[0])
+            {
+                Console.WriteLine("Long entry possition found");
+                return "Long";
+            }
+            else
+            {
+                Console.WriteLine("No entry possition found");
+                return "Nothing";
+            }
+
+        }
+```
 
