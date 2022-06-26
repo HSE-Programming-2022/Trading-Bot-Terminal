@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using System.Web;
+using CryptoTerminal.Core;
 
-namespace TradingTerminal
+namespace CryptoTerminal
 {
+    //Done
     public class TradingFunctions
     {
 
@@ -24,43 +26,52 @@ namespace TradingTerminal
 
             var client = new WebClient();
 
-            string[] firstfilter = client.DownloadString(URL.ToString()).Split(new char[] { ',' } );
+            string[] firstfilter = client.DownloadString(URL.ToString()).Split(new char[] { ',', '.', ':' });
 
-            int infotypecount = 3 * n;
+            /*
+            foreach (var item in firstfilter)
+            {
+                Console.WriteLine(item);
+            }
+            */
+
+            int infotypecount = 7 * n;
 
             string[] secondfilter = new string[n];
-
+                       
+            
             int count = 0;
-            for (int i = 0; i < infotypecount; i+=3)
+            for (int i = 1; i < infotypecount; i+=7)
             {
                 string[] filter = new string[n];
-                
-                if (i == 0)
-                {
-                    filter[count] += firstfilter[i].Substring(10);
-                    secondfilter[count] += filter[count].Substring(0, 5);
-                    count++;
-                }
-                else if (i != 0)
-                {
-                    filter[count] += firstfilter[i].Substring(9);
-                    secondfilter[count] += filter[count].Substring(0, 5);
-                    count++;
-                }
+                secondfilter[count] += firstfilter[i];
+                count++;                
             }
+
+            /*
+            foreach (var item in secondfilter)
+            {
+                Console.WriteLine(item);
+            }
+            */
 
             int[] thirdfilter = new int[n];
             for (int i = 0; i < n; i++)
             {
                 thirdfilter[i] = Convert.ToInt32(secondfilter[i]);
             }
+
             /*
             foreach (var item in thirdfilter)
             {
-                Console.WriteLine(item);       
+                Console.WriteLine(Convert.ToString(item));
             }
             */
+
             return thirdfilter;
+            
+            
+            
         }
 
         public static int[] GetCoinCourse(int n, string m)
@@ -78,36 +89,53 @@ namespace TradingTerminal
 
             var client = new WebClient();
 
-            string[] firstfilter = client.DownloadString(URL.ToString()).Split(new char[] { ',' });
-            
-            int infotypecount = 8 * n;
-            
-            string[] secondfilter = new string[n];
+            string[] firstfilter = client.DownloadString(URL.ToString()).Split(new char[] { ',', '.', ':' });
 
-            int count = 0;
-            for (int i = 5; i < infotypecount ; i += 8)
-            {
-                string[] filter = new string[n];
-                filter[count] += firstfilter[i].Substring(8);
-                secondfilter[count] += filter[count].Substring(0, 5);
-                count++;
-            }
-            
-            int[] thirdfilter = new int[n];
-            for (int i = 0; i < n; i++)
-            {
-                thirdfilter[i] = Convert.ToInt32(secondfilter[i]);
-            }
             /*
-            foreach (var item in thirdfilter)
+            foreach (var item in firstfilter)
             {
                 Console.WriteLine(item);
             }
             */
+
+            int infotypecount = 23 * n;
+
+            string[] secondfilter = new string[n];
+
+            int count = 0;
+
+            for (int i = 16; i < infotypecount; i += 23)
+            {
+                secondfilter[count] += firstfilter[i];
+                count++;
+            }
+
+            /*
+            foreach (var item in secondfilter)
+            {
+                Console.WriteLine(item);
+            }
+            */
+
+            int[] thirdfilter = new int[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                thirdfilter[i] = Convert.ToInt32(secondfilter[i]);
+            }
+
+            /*
+            foreach (var item in thirdfilter)
+            {
+                Console.WriteLine(Convert.ToString(item));
+            }
+            */
+            
             return thirdfilter;
         }
 
-        public static bool SuperTrendFlatCheck(string m)
+
+        public static string SuperTrendFlatCheck(string m)
         {
             int[] supertrandvalues = SuperTrendAPICall(5, m);
 
@@ -127,13 +155,13 @@ namespace TradingTerminal
 
             if (count == supertrandvalues.Length)
             {
-                Console.WriteLine("Close possition found");
-                return true;
+                //Console.WriteLine("Close possition found");
+                return "True";
             }
             else
             {
-                Console.WriteLine("No Close possition found");
-                return false;
+                //Console.WriteLine("No Close possition found");
+                return "False";
             }
         }
 
@@ -145,20 +173,89 @@ namespace TradingTerminal
 
             if (supertrandvalues[1] < coincoursevalues[1] && supertrandvalues[0] > coincoursevalues[0])
             {
-                Console.WriteLine("Short entry possition found");
+                //Console.WriteLine("Short entry possition found");
                 return "Short";
             }
             else if (supertrandvalues[1] > coincoursevalues[1] && supertrandvalues[0] < coincoursevalues[0])
             {
-                Console.WriteLine("Long entry possition found");
+                //Console.WriteLine("Long entry possition found");
                 return "Long";
             }
             else
             {
-                Console.WriteLine("No entry possition found");
+                //Console.WriteLine("No entry possition found");
                 return "Nothing";
             }
 
+
+     
         }
+
+        public static void Request(object obj)
+        {
+
+            string n = "";
+
+            string sendentry = "";
+            string sendexit = "";
+            
+
+            if (obj is string m)
+            {
+                n += obj;
+            }
+
+            string messege = n + ": ";
+
+            string infoline = "";
+            
+            infoline += EntryPossitionCheck(n);
+            infoline += SuperTrendFlatCheck(n);
+
+            //Console.WriteLine(infoline);
+
+            if (infoline.Contains("Short"))
+            {
+                Console.WriteLine("Found " + n +" short entry possition!");
+                sendentry += "Found " + n + " short entry possition!";
+                //Email.SendSignal(Email.Mail, sendentry);
+            }
+            else if (infoline.Contains("Long"))
+            {
+                Console.WriteLine("Found " + n + " long entry possition!");
+                sendentry += "Found " + n + " long entry possition!";
+                //Email.SendSignal(Email.Mail, sendentry);
+            }
+            else if (infoline.Contains("Nothing"))
+            {
+                Console.WriteLine("Found " + n + " no entry possition.");
+                sendentry += "Found " + n + " no entry possition.";
+                //Email.SendSignal(Email.Mail, sendentry);
+            }
+
+
+            if (infoline.Contains("True"))
+            {
+                Console.WriteLine("Found " + n + " market exit possition!");
+                sendexit += " Found " + n + " market exit possition!";
+                //Email.SendSignal(Email.Mail, sendexit);
+            }
+            else if (infoline.Contains("False"))
+            {
+                Console.WriteLine("Not found " + n + " no market exit possition.");
+                sendexit += " Found " + n + " no market exit possition.";
+                //Email.SendSignal(Email.Mail, sendexit);
+            }
+
+            messege += sendentry;
+            messege += sendexit;
+
+            Email.SendSignal(Email.Mail, messege);
+
+            infoline = "";
+
+        }
+            
+
     }
 }
