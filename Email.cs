@@ -22,7 +22,7 @@ namespace CryptoTerminal.Core
 
         public static void SendSignal(string mail, string messege)
         {
-            if (mail != "" && mail.Contains("@") && mail.Contains(".") && (mail.Length >= 5))
+            if (mail != null && mail.Contains("@") && mail.Contains(".") && (mail.Length >= 5))
             {
                 MailAddress from = new MailAddress("supertrendbot@outlook.com", "SuperTrendSignal");
                 // кому отправляем
