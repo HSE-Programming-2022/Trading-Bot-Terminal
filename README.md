@@ -56,7 +56,7 @@ public static int[] SuperTrendAPICall(int n, string m)
             var URL = new UriBuilder("https://api.taapi.io/supertrend");
 
             var queryString = HttpUtility.ParseQueryString(string.Empty);
-            queryString["secret"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjJiMTlhY2Y2YzI4YjU1Y2Q1ODQ4OWM4IiwiaWF0IjoxNjU1OTY3ODI0LCJleHAiOjMzMTYwNDMxODI0fQ.y-SLYp6uSnX25ws7cLNWG-idLjvbj0qW8M-qvMGs5Go";
+            queryString["secret"] = "";
             queryString["exchange"] = "binance";
             queryString["symbol"] = m;
             queryString["interval"] = "1h";
@@ -121,7 +121,7 @@ public static int[] GetCoinCourse(int n, string m)
             var URL = new UriBuilder("https://api.taapi.io/candle");
 
             var queryString = HttpUtility.ParseQueryString(string.Empty);
-            queryString["secret"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVlIjoiNjJiMTlhY2Y2YzI4YjU1Y2Q1ODQ4OWM4IiwiaWF0IjoxNjU1OTY3ODI0LCJleHAiOjMzMTYwNDMxODI0fQ.y-SLYp6uSnX25ws7cLNWG-idLjvbj0qW8M-qvMGs5Go";
+            queryString["secret"] = "";
             queryString["exchange"] = "binance";
             queryString["symbol"] = m;
             queryString["interval"] = "1h";
